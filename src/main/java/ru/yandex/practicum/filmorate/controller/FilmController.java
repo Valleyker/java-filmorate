@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.FilmException;
+import ru.yandex.practicum.filmorate.exception.UserException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -14,15 +15,12 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
 
-    private HashMap<String, Film> films = new HashMap<>();
+    private HashMap<Integer, Film> films = new HashMap<>();
 
     @GetMapping()
     public ArrayList<Film> findAll() {
-        log.info("Получен запрос получение всех фильмов. Количество фильмов - {}", films.size());
-        for (Film user : films.values()) {
-            System.out.println(user.toString());
-        }
         ArrayList<Film> values = new ArrayList<>(films.values());
+        log.info("Получен запрос получение всех фильмов. Количество фильмов - {}", films.size());
         return values;
     }
 
@@ -30,17 +28,22 @@ public class FilmController {
     @PostMapping()
     public Film create(@RequestBody Film film) throws FilmException {
         checkFilm(film);
-        films.put(film.getName(), film);
-        log.info("Получен запрос на добавление фильма c названием- {}.", film.getName());
+        film.setId(films.size() + 1);
+        films.put(film.getId(), film);
+        log.info("Получен запрос на добавление фильма c id- {}.", film.getId());
         return film;
     }
 
     @PutMapping()
     public Film update(@RequestBody Film film) throws FilmException {
-        checkFilm(film);
-        films.put(film.getName(), film);
-        log.info("Получен запрос на изменение фильма c названием- {}.", film.getName());
-        return film;
+        if (films.containsKey(film.getId())) {
+            checkFilm(film);
+            films.put(film.getId(), film);
+            log.info("Получен запрос на изменение фильма c id- {}.", film.getId());
+            return film;
+        } else  {
+            throw new FilmException("id не существует");
+        }
     }
 
     private void checkFilm(Film film) throws FilmException {

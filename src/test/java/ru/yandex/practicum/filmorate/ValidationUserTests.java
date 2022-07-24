@@ -1,12 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
-import com.sun.media.sound.InvalidDataException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.exception.InvalidEmailException;
-import ru.yandex.practicum.filmorate.exception.InvalidUserDateException;
-import ru.yandex.practicum.filmorate.exception.UserLoginException;
+import ru.yandex.practicum.filmorate.exception.UserException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -21,7 +17,7 @@ public class ValidationUserTests {
         UserController userController = new UserController();
         User user = User.builder().id(1).login("test1").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
         Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(InvalidEmailException.class, throwable.getClass());
+        assertEquals(UserException.class, throwable.getClass());
     }
 
     @Test
@@ -29,7 +25,7 @@ public class ValidationUserTests {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimovyandex.ru").login("test1").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
         Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(InvalidEmailException.class, throwable.getClass());
+        assertEquals(UserException.class, throwable.getClass());
     }
 
     @Test
@@ -37,7 +33,7 @@ public class ValidationUserTests {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
         Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserLoginException.class, throwable.getClass());
+        assertEquals(UserException.class, throwable.getClass());
     }
 
     @Test
@@ -45,11 +41,11 @@ public class ValidationUserTests {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").login("Ivan Gerasimov").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
         Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserLoginException.class, throwable.getClass());
+        assertEquals(UserException.class, throwable.getClass());
     }
 
     @Test
-    void NameEmptyTests() throws InvalidDataException, InvalidEmailException, UserLoginException, InvalidUserDateException {
+    void NameEmptyTests() throws UserException {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").login("IvanGerasimov").birthday(LocalDate.parse("2020-01-02")).build();
         userController.create(user);
@@ -61,7 +57,7 @@ public class ValidationUserTests {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").login("IvanGerasimov").name("test1").birthday(LocalDate.parse("2025-01-02")).build();
         Throwable throwable = assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(InvalidUserDateException.class, throwable.getClass());
+        assertEquals(UserException.class, throwable.getClass());
     }
 
 }

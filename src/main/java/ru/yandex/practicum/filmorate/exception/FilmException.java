@@ -7,3 +7,4 @@ public class FilmException extends IOException {
         super(message);
     }
 }
+
