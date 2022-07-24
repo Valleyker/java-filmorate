@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping()
     public ArrayList<User> findAll() {
         ArrayList<User> values = new ArrayList<>(users.values());
-        log.info("Получен запрос получение всех пользователей. Количество пользователей - {} , {}", users.size());
+        log.info("Получен запрос получение всех пользователей. Количество пользователей - {}", users.size());
         return values;
     }
 
@@ -40,7 +40,7 @@ public class UserController {
             users.put(user.getId(), user);
             log.info("Получен запрос на изменение пользователя с id- {}.", user.getId());
             return user;
-        } else  {
+        } else {
             throw new UserException("id не существует");
         }
     }
@@ -52,7 +52,7 @@ public class UserController {
         if (!user.getEmail().contains("@")) {
             throw new UserException("В почте отсутствует знак @");
         }
-        if ( user.getLogin() == null || user.getLogin().trim().isEmpty() || user.getLogin().contains(" ")) {
+        if (user.getLogin() == null || user.getLogin().trim().isEmpty() || user.getLogin().contains(" ")) {
             throw new UserException("Логин не может быть пустым или содержать пробелы");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {

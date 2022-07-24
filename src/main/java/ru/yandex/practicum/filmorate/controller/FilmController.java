@@ -40,7 +40,7 @@ public class FilmController {
             films.put(film.getId(), film);
             log.info("Получен запрос на изменение фильма c id- {}.", film.getId());
             return film;
-        } else  {
+        } else {
             throw new FilmException("id не существует");
         }
     }
