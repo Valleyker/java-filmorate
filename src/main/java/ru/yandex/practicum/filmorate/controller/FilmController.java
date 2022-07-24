@@ -14,6 +14,7 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
 
+    private final LocalDate movieBirthday = LocalDate.of(1895, 12, 28);
     private HashMap<Integer, Film> films = new HashMap<>();
 
     @GetMapping()
@@ -46,7 +47,7 @@ public class FilmController {
     }
 
     private void checkFilm(Film film) throws FilmException {
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate().isBefore(movieBirthday)) {
             throw new FilmException("Дата должна быть после 1895-12-28");
         }
         if (film.getDescription().length() > 200) {
