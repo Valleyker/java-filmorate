@@ -16,32 +16,28 @@ public class ValidationUserTests {
     void EmailEmptyTest() {
         UserController userController = new UserController();
         User user = User.builder().id(1).login("test1").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
-        Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserException.class, throwable.getClass());
+        assertThrows(UserException.class, () -> userController.create(user));
     }
 
     @Test
     void MissingAtSymbolTest() {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimovyandex.ru").login("test1").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
-        Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserException.class, throwable.getClass());
+        assertThrows(UserException.class, () -> userController.create(user));
     }
 
     @Test
     void LoginEmptyTest() {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
-        Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserException.class, throwable.getClass());
+        assertThrows(UserException.class, () -> userController.create(user));
     }
 
     @Test
     void LoginSpaceTest() {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").login("Ivan Gerasimov").name("test1").birthday(LocalDate.parse("2020-01-02")).build();
-        Throwable throwable =  assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserException.class, throwable.getClass());
+        assertThrows(UserException.class, () -> userController.create(user));
     }
 
     @Test
@@ -56,8 +52,7 @@ public class ValidationUserTests {
     void BirthdayTest() {
         UserController userController = new UserController();
         User user = User.builder().id(1).email("v4lgerasimov@yandex.ru").login("IvanGerasimov").name("test1").birthday(LocalDate.parse("2025-01-02")).build();
-        Throwable throwable = assertThrows(Throwable.class, () -> userController.create(user));
-        assertEquals(UserException.class, throwable.getClass());
+        assertThrows(UserException.class, () -> userController.create(user));
     }
 
 }
