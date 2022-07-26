@@ -72,5 +72,4 @@ public class ValidationFilmTests {
         filmController.create(film);
         assertEquals(120, film.getDuration());
     }
-
 }
