@@ -2,8 +2,11 @@ package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.FilmException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.film.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -12,9 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ValidationFilmTests {
 
+
     @Test()
     void checkNullNameOfTheFilm() {
-        FilmController filmController = new FilmController();
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -22,13 +27,14 @@ public class ValidationFilmTests {
                 .releaseDate(LocalDate.parse("2020-01-02"))
                 .duration(120)
                 .build();
-        assertThrows(FilmException.class, () -> filmController.create(film));
+        assertThrows(ValidationException.class, () -> filmController.createFilm(film));
 
     }
 
     @Test()
     void checkDescriptionOfTheFilmWithMoreThan250Symbols() {
-        FilmController filmController = new FilmController();
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -40,13 +46,14 @@ public class ValidationFilmTests {
                 .duration(120)
                 .name("test")
                 .build();
-        assertThrows(FilmException.class, () -> filmController.create(film));
+        assertThrows(ValidationException.class, () -> filmController.createFilm(film));
 
     }
 
     @Test()
-    void checkDescriptionOfTheFilmWith200Symbols() throws FilmException {
-        FilmController filmController = new FilmController();
+    void checkDescriptionOfTheFilmWith200Symbols() throws ValidationException {
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -58,13 +65,14 @@ public class ValidationFilmTests {
                 .duration(120)
                 .name("LOL")
                 .build();
-        filmController.create(film);
+        filmController.createFilm(film);
         assertEquals(200, filmController.findAll().get(0).getDescription().length());
     }
 
     @Test()
     void checkReleaseDateBefore1895() {
-        FilmController filmController = new FilmController();
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -73,12 +81,13 @@ public class ValidationFilmTests {
                 .duration(120)
                 .name("LOL")
                 .build();
-        assertThrows(FilmException.class, () -> filmController.create(film));
+        assertThrows(ValidationException.class, () -> filmController.createFilm(film));
     }
 
     @Test()
-    void checkReleaseDateOn1895() throws FilmException {
-        FilmController filmController = new FilmController();
+    void checkReleaseDateOn1895() throws ValidationException {
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -87,13 +96,14 @@ public class ValidationFilmTests {
                 .duration(120)
                 .name("LOL")
                 .build();
-        filmController.create(film);
+        filmController.createFilm(film);
         assertEquals(LocalDate.parse("1895-12-28"), film.getReleaseDate());
     }
 
     @Test()
-    void checkDurationMinus() throws FilmException {
-        FilmController filmController = new FilmController();
+    void checkDurationMinus() {
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -102,12 +112,13 @@ public class ValidationFilmTests {
                 .duration(-120)
                 .name("LOL")
                 .build();
-        assertThrows(FilmException.class, () -> filmController.create(film));
+        assertThrows(ValidationException.class, () -> filmController.createFilm(film));
     }
 
     @Test()
-    void checkDurationZero() throws FilmException {
-        FilmController filmController = new FilmController();
+    void checkDurationZero() {
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -116,12 +127,13 @@ public class ValidationFilmTests {
                 .duration(0)
                 .name("LOL")
                 .build();
-        assertThrows(FilmException.class, () -> filmController.create(film));
+        assertThrows(ValidationException.class, () -> filmController.createFilm(film));
     }
 
     @Test()
-    void checkDurationPlus() throws FilmException {
-        FilmController filmController = new FilmController();
+    void checkDurationPlus() throws ValidationException {
+        FilmService filmService = new FilmService(new InMemoryFilmStorage(), new InMemoryUserStorage());
+        FilmController filmController = new FilmController(filmService);
         Film film = Film
                 .builder()
                 .id(1)
@@ -130,7 +142,7 @@ public class ValidationFilmTests {
                 .duration(120)
                 .name("LOL")
                 .build();
-        filmController.create(film);
+        filmController.createFilm(film);
         assertEquals(120, film.getDuration());
     }
 }
