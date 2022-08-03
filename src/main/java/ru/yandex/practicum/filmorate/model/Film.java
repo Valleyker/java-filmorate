@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Data
 @Builder
-
 public class Film {
     private long id;
     private String name;
@@ -21,9 +20,4 @@ public class Film {
     private int duration;
     @JsonIgnore
     final private Set<User> like = new HashSet<>();
-
-    @Override
-    public int hashCode() {
-        return (int) id;
-    }
 }

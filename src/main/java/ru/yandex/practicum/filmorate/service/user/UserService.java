@@ -48,8 +48,8 @@ public class UserService {
         User user = getById(userId);
         User friend = getById(friendId);
 
-        user.getFriends().add(getById(friendId));
-        friend.getFriends().add(getById(userId));
+        user.getFriends().add(friend);
+        friend.getFriends().add(user);
     }
 
     public Set<User> getListFriends(long userId) {
@@ -80,7 +80,7 @@ public class UserService {
         return commonFriends;
     }
 
-    public void validate(User user) throws ValidationException {
+    private void validate(User user) throws ValidationException {
         if (user.getEmail() == null || !user.getEmail().contains("@")) {
             log.debug("Адрес электронной почты пуст/не содержит @");
             throw new ValidationException("Проверьте адрес электронной почты.");
@@ -98,7 +98,7 @@ public class UserService {
         }
     }
 
-    public void check(long userId) {
+    private void check(long userId) {
         if (!userStorage.contains(userId)) {
             throw new NotFoundException(String.format("Пользователь с id=%s не найден", userId));
         }
