@@ -70,7 +70,7 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
-    public void validate(Film film) throws ValidationException {
+    private void validate(Film film) throws ValidationException {
         if (film.getName() == null || film.getName().isBlank()) {
             log.debug("Название фильма не указано");
             throw new ValidationException("Название фильма не указано.");
@@ -89,7 +89,7 @@ public class FilmService {
         }
     }
 
-    public void check(long filmId) {
+    private void check(long filmId) {
         if (!filmStorage.contains(filmId)) {
             throw new NotFoundException(String.format("Фильм с id=%s не найден", filmId));
         }

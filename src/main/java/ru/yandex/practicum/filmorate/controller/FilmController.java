@@ -25,45 +25,45 @@ public class FilmController {
 
     @GetMapping
     public ArrayList<Film> findAll() {
-        log.info("GET - all films");
+        log.info("GET - all {} films ", filmService.findAll().size());
         return filmService.findAll();
     }
 
     @GetMapping("/{id}")
     public Film getFilmById(@PathVariable long id) {
-        log.info("GET - film by id");
+        log.info("GET - film by id = {}", id);
         return filmService.getById(id);
     }
 
     @PostMapping
     public Film createFilm(@RequestBody Film film) throws ValidationException {
-        log.info("POST - create film");
+        log.info("POST - create film id: {}", film.getId());
         return filmService.create(film);
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
-        log.info("PUT - update film");
+        log.info("PUT - update film id: {}", film.getId());
         return filmService.update(film);
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable("id") long filmId,
                         @PathVariable long userId) {
-        log.info("PUT - user set liked the film");
+        log.info("PUT - user id - {} set liked the film id - {}", userId, filmId);
         filmService.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void deleteLike(@PathVariable("id") long filmId,
                            @PathVariable long userId) {
-        log.info("DELETE - user deleted like from the film");
+        log.info("DELETE - user id - {} deleted like from the film id-{}", userId, filmId);
         filmService.deleteLike(filmId, userId);
     }
 
     @GetMapping("/popular")
     public ArrayList<Film> getListPopularFilm(@RequestParam(defaultValue = "10") int count) {
-        log.info("GET - list popular film(size = count)");
+        log.info("GET - top {} popular films", count);
         return new ArrayList<>(filmService.getListPopularFilm(count));
     }
 

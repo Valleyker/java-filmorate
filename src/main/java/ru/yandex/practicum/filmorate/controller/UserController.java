@@ -26,38 +26,38 @@ public class UserController {
 
     @GetMapping
     public ArrayList<User> findAll() {
-        log.info("GET - users");
+        log.info("GET - {} users", userService.findAll().size());
         return new ArrayList<>(userService.findAll());
     }
 
     @PostMapping
     public User createUser(@RequestBody User user) throws ValidationException {
-        log.info("POST - user");
+        log.info("POST - user with id: {}", user.getId());
         return userService.create(user);
     }
 
     @PutMapping
     public User updateUser(@RequestBody User user) throws ValidationException {
-        log.info("PUT - user");
+        log.info("PUT - user with id: {}", user.getId());
         return userService.update(user);
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") long userId) {
-        log.info("GET user by id");
+        log.info("GET user by id: {}", userId);
         return userService.getById(userId);
     }
 
     @GetMapping("/{id}/friends")
     public Set<User> getListFriends(@PathVariable("id") long userId) {
-        log.info("GET - list friends user with id={}", userId);
+        log.info("GET - list friends user with id: {}", userId);
         return userService.getListFriends(userId);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public ResponseEntity<HttpStatus> addInFriends(@PathVariable("id") long userId,
                                                    @PathVariable("friendId") long friendId) {
-        log.info("PUT - add user in friend");
+        log.info("PUT - add user id: {} in friend id: {}", userId, friendId);
         userService.addInFriend(userId, friendId);
         return ResponseEntity.ok().build();
     }
@@ -65,14 +65,14 @@ public class UserController {
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFromFriends(@PathVariable("id") long userId,
                                   @PathVariable("friendId") long friendId) {
-        log.info("DELETE - user from friend");
+        log.info("DELETE - user id: {} from friend id: {}", userId, friendId);
         userService.deleteFromFriends(userId, friendId);
     }
 
     @GetMapping("{id}/friends/common/{otherId}")
     public ArrayList<User> getListCommonFriends(@PathVariable("id") long userId,
                                                 @PathVariable("otherId") long otherId) {
-        log.info("GET - common friends with user");
+        log.info("GET - {} common friends with user", userService.getListCommonFriends(userId, otherId).size());
         return new ArrayList<>(userService.getListCommonFriends(userId, otherId));
     }
 
