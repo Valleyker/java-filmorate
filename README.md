@@ -1,7 +1,9 @@
 # java-filmorate
 Template repository for Filmorate project.
 
+
 ![диаграмма](https://user-images.githubusercontent.com/76499013/183541207-46d07ee1-a99e-4bb8-85f8-6cb509f39736.jpg)
+
 
 
 
