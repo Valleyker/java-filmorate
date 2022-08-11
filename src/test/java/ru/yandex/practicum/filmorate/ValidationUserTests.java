@@ -2,8 +2,10 @@ package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.exception.UserException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.user.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -14,19 +16,21 @@ public class ValidationUserTests {
 
     @Test
     void emailEmptyTest() {
-        UserController userController = new UserController();
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User.builder()
                 .id(1)
                 .login("test1")
                 .name("test1")
                 .birthday(LocalDate.parse("2020-01-02"))
                 .build();
-        assertThrows(UserException.class, () -> userController.create(user));
+        assertThrows(ValidationException.class, () -> userController.createUser(user));
     }
 
     @Test
     void missingAtSymbolTest() {
-        UserController userController = new UserController();
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User
                 .builder()
                 .id(1)
@@ -35,12 +39,13 @@ public class ValidationUserTests {
                 .name("test1")
                 .birthday(LocalDate.parse("2020-01-02"))
                 .build();
-        assertThrows(UserException.class, () -> userController.create(user));
+        assertThrows(ValidationException.class, () -> userController.createUser(user));
     }
 
     @Test
     void loginEmptyTest() {
-        UserController userController = new UserController();
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User
                 .builder()
                 .id(1)
@@ -48,12 +53,13 @@ public class ValidationUserTests {
                 .name("test1")
                 .birthday(LocalDate.parse("2020-01-02"))
                 .build();
-        assertThrows(UserException.class, () -> userController.create(user));
+        assertThrows(ValidationException.class, () -> userController.createUser(user));
     }
 
     @Test
     void loginSpaceTest() {
-        UserController userController = new UserController();
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User
                 .builder()
                 .id(1)
@@ -62,12 +68,13 @@ public class ValidationUserTests {
                 .name("test1")
                 .birthday(LocalDate.parse("2020-01-02"))
                 .build();
-        assertThrows(UserException.class, () -> userController.create(user));
+        assertThrows(ValidationException.class, () -> userController.createUser(user));
     }
 
     @Test
-    void nameEmptyTests() throws UserException {
-        UserController userController = new UserController();
+    void nameEmptyTests() throws ValidationException {
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User
                 .builder()
                 .id(1)
@@ -75,13 +82,14 @@ public class ValidationUserTests {
                 .login("IvanGerasimov")
                 .birthday(LocalDate.parse("2020-01-02"))
                 .build();
-        userController.create(user);
+        userController.createUser(user);
         assertEquals(user.getLogin(), userController.findAll().get(0).getName());
     }
 
     @Test
     void birthdayTest() {
-        UserController userController = new UserController();
+        UserService userService = new UserService(new InMemoryUserStorage());
+        UserController userController = new UserController(userService);
         User user = User
                 .builder()
                 .id(1)
@@ -90,7 +98,7 @@ public class ValidationUserTests {
                 .name("test1")
                 .birthday(LocalDate.parse("2025-01-02"))
                 .build();
-        assertThrows(UserException.class, () -> userController.create(user));
+        assertThrows(ValidationException.class, () -> userController.createUser(user));
     }
 
 }
