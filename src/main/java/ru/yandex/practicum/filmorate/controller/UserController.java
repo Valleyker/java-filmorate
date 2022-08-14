@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.ErrorResponse;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.user.UserService;
 
@@ -49,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public Set<User> getListFriends(@PathVariable("id") long userId) {
+    public Collection<User> getListFriends(@PathVariable("id") long userId) {
         log.info("GET - list friends user with id: {}", userId);
         return userService.getListFriends(userId);
     }
@@ -62,12 +60,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFromFriends(@PathVariable("id") long userId,
-                                  @PathVariable("friendId") long friendId) {
-        log.info("DELETE - user id: {} from friend id: {}", userId, friendId);
-        userService.deleteFromFriends(userId, friendId);
-    }
 
     @GetMapping("{id}/friends/common/{otherId}")
     public ArrayList<User> getListCommonFriends(@PathVariable("id") long userId,
@@ -76,24 +68,15 @@ public class UserController {
         return new ArrayList<>(userService.getListCommonFriends(userId, otherId));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestException(final ValidationException e) {
-        log.info("400 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable long id) {
+        log.info("Delete user");
+        userService.deleteUser(id);
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        log.info("404 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalServerErrorException(final Exception e) {
-        log.info("500 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteUserOrFriend(@PathVariable long id, @PathVariable long friendId) {
+        log.info("Delete friend");
+        userService.deleteFriend(id, friendId);
     }
 }

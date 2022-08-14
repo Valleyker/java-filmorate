@@ -1,9 +1,12 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class ValidationException extends Exception {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public ValidationException(String message) {
-        super(message);
+public class ValidationException extends ResponseStatusException {
+
+    public ValidationException(HttpStatus status, String message) {
+        super(status, message);
     }
 
 }
