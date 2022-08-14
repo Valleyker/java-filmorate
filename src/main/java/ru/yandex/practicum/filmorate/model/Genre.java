@@ -10,8 +10,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @Data
 public class Genre {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     @Override
     public boolean equals(Object o) {

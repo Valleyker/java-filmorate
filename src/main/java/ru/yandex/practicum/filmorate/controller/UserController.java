@@ -70,13 +70,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id) {
-        log.info("Delete user");
+        log.info("Delete user with id: {}", id);
         userService.deleteUser(id);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteUserOrFriend(@PathVariable long id, @PathVariable long friendId) {
-        log.info("Delete friend");
+        log.info("Delete friend with id: {}", id);
         userService.deleteFriend(id, friendId);
     }
 }

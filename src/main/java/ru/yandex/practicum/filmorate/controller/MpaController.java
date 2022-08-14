@@ -25,11 +25,13 @@ public class MpaController {
 
    @GetMapping
    public Collection<Mpa> findAll() {
+      log.info("GET - all {} MPA", mpaService.findAll().size());
       return mpaService.findAll();
    }
 
    @GetMapping("/{id}")
    public Mpa getMpaById(@PathVariable int id)  {
+      log.info("GET MPA by id: {}", id);
       return mpaService.getMpaById(id);
    }
 

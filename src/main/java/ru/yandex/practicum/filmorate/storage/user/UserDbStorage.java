@@ -80,7 +80,6 @@ public class UserDbStorage implements UserStorage {
         jdbcTemplate.update(sqlQuery, id);
     }
 
-
     static User makeUser(ResultSet rs, int rowNum) throws SQLException {
         return new User(rs.getLong("user_id"),
                 rs.getString("email"),
@@ -88,5 +87,4 @@ public class UserDbStorage implements UserStorage {
                 rs.getString("name"),
                 rs.getDate("birthday").toLocalDate());
     }
-
 }

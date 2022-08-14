@@ -81,15 +81,18 @@ public class FilmService {
         }
         if (film.getDescription().length() > 200) {
             log.debug("Описание фильма больше 200 символов");
-            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Описание фильма не должно превышать 200 символов.");
+            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Описание " +
+                    "фильма не должно превышать 200 символов.");
         }
         if (film.getReleaseDate().isBefore(MOVIE_BIRTHDAY)) {
             log.debug("Дата релиза раньше 28 декабря 1895 года");
-            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Дата релиза не может быть раньше 28 декабря 1895 года.");
+            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Дата релиза не может" +
+                    " быть раньше 28 декабря 1895 года.");
         }
         if (film.getDuration() <= 0) {
             log.debug("Продолжительность фильма отрицательная или равна нулю");
-            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Продолжительность фильма не может быть отрицательной.");
+            throw new ValidationException(HttpStatus.BAD_REQUEST ,"Продолжительность " +
+                    "фильма не может быть отрицательной.");
         }
     }
 
