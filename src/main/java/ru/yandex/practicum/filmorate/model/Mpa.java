@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class Mpa {
-    int id;
-    String name;
+    private int id;
+    private String name;
 }

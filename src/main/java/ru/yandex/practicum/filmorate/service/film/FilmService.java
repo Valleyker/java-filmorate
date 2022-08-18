@@ -38,8 +38,7 @@ public class FilmService {
 
     public Film getById(long filmId) {
         Film film = filmStorage.getById(filmId);
-        film.setGenres(new LinkedHashSet<>(genreDBStorage.getFilmGenres(filmId))
-        );
+        film.setGenres(new LinkedHashSet<>(genreDBStorage.getFilmGenres(filmId)));
         return film;
     }
 

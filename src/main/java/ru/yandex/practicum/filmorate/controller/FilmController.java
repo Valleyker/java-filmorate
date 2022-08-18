@@ -66,7 +66,7 @@ public class FilmController {
 
     @DeleteMapping("/{id}")
     public void deleteFilm(@PathVariable long id) {
-        log.info("Delete film");
+        log.info("Delete film with id - {}", id);
         filmService.deleteFilm(id);
     }
 
