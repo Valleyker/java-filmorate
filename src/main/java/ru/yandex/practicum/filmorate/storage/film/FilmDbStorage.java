@@ -48,8 +48,8 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setString(1, film.getName());
             stmt.setString(2, film.getDescription());
             stmt.setInt(3, film.getDuration());
-            final LocalDate relese = film.getReleaseDate();
-            stmt.setDate(4, Date.valueOf(relese));
+            final LocalDate release = film.getReleaseDate();
+            stmt.setDate(4, Date.valueOf(release));
             if(film.getMpa() != null){
                 stmt.setInt(5, film.getMpa().getId());
             }

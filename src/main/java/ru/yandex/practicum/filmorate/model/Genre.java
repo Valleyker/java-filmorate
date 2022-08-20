@@ -8,7 +8,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"name"})
 @Data
 public class Genre {
     private int id;
