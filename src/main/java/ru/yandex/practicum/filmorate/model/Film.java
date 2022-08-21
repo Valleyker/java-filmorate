@@ -1,16 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Builder
 public class Film {
     private long id;
     private String name;
@@ -18,6 +18,6 @@ public class Film {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
     private int duration;
-    @JsonIgnore
-    final private Set<User> like = new HashSet<>();
+    private Mpa mpa;
+    private Set<Genre> genres;
 }

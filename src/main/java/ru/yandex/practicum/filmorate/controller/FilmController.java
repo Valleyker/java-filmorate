@@ -2,11 +2,8 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.ErrorResponse;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
 
@@ -67,25 +64,10 @@ public class FilmController {
         return new ArrayList<>(filmService.getListPopularFilm(count));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestException(final ValidationException e) {
-        log.info("400 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        log.info("404 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalServerErrorException(final Exception e) {
-        log.info("500 - {}", e.getMessage());
-        return new ErrorResponse(String.format("Ошибка с полем \"%s\".", e.getMessage()));
+    @DeleteMapping("/{id}")
+    public void deleteFilm(@PathVariable long id) {
+        log.info("Delete film with id - {}", id);
+        filmService.deleteFilm(id);
     }
 
 }
